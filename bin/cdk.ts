@@ -6,8 +6,8 @@ import { UsEast1Stack } from '../lib/us-east-1-stack';
 import { EnvironmentProps } from '../lib/environment-props';
 
 export const props: EnvironmentProps = {
-  awsRegion: 'us-west-2',
-  awsAccount: process.env.CDK_DEFAULT_ACCOUNT!,
+  awsRegion: 'ap-northeast-1', // Tokyo region
+  awsAccount: '130713583835',
   // Set Dify version
   difyImageTag: '1.4.3',
   // Set plugin-daemon version to stable release
@@ -16,10 +16,22 @@ export const props: EnvironmentProps = {
   // uncomment the below options for less expensive configuration:
   // isRedisMultiAz: false,
   // useNatInstance: true,
-  // enableAuroraScalesToZero: true,
+  enableAuroraScalesToZero: true,
   // useFargateSpot: true,
 
+  domainName: 'aibase.buzz',
+  subDomain: 'dify',
+  useCloudFront: false,
+
   // Please see EnvironmentProps in lib/environment-props.ts for all the available properties
+  additionalEnvironmentVariables: [
+    {
+      key: 'NOTION_INTERNAL_SECRET',
+      value: { secretName: 'NOTION_INTERNAL_SECRET'},
+      targets: ['api'], 
+    },
+  ],
+
 };
 
 const app = new cdk.App();
