@@ -11,13 +11,15 @@ export const props: EnvironmentProps = {
   // Set Dify version
   difyImageTag: '1.7.0',
   // Set plugin-daemon version to stable release
-  difyPluginDaemonImageTag: '0.1.2-local',
+  // difyPluginDaemonImageTag: '0.1.2-local',
 
   // uncomment the below options for less expensive configuration:
-  // isRedisMultiAz: false,
+  isRedisMultiAz: false,
   // useNatInstance: true,
   enableAuroraScalesToZero: true,
   // useFargateSpot: true,
+
+  customEcrRepositoryName: 'dify-images',
 
   domainName: 'aibase.buzz',
   subDomain: 'dify',
