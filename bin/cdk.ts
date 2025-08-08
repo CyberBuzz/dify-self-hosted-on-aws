@@ -9,15 +9,15 @@ export const props: EnvironmentProps = {
   awsRegion: 'ap-northeast-1', // Tokyo region
   awsAccount: '130713583835',
   // Set Dify version
-  difyImageTag: '1.7.0',
+  difyImageTag: '1.7.1',
   // Set plugin-daemon version to stable release
   // difyPluginDaemonImageTag: '0.1.2-local',
 
   // uncomment the below options for less expensive configuration:
   isRedisMultiAz: false,
-  // useNatInstance: true,
+  useNatInstance: true,
   enableAuroraScalesToZero: true,
-  // useFargateSpot: true,
+  useFargateSpot: true,
 
   customEcrRepositoryName: 'dify-images',
 
