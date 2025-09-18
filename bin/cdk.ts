@@ -9,7 +9,7 @@ export const props: EnvironmentProps = {
   awsRegion: 'ap-northeast-1', // Tokyo region
   awsAccount: '130713583835',
   // Set Dify version
-  difyImageTag: '1.7.1',
+  difyImageTag: '1.8.1',
   // Set plugin-daemon version to stable release
   // difyPluginDaemonImageTag: '0.1.2-local',
 

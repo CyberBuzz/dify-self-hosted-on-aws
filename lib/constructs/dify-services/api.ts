@@ -14,6 +14,7 @@ import { getAdditionalEnvironmentVariables, getAdditionalSecretVariables } from 
 import { EnvironmentProps } from '../../environment-props';
 import { EmailService } from '../email';
 import { AwsCustomResource, AwsCustomResourcePolicy, PhysicalResourceId } from 'aws-cdk-lib/custom-resources';
+import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 
 export interface ApiServiceProps {
   cluster: ICluster;
@@ -146,6 +147,7 @@ export class ApiService extends Construct {
       },
       logging: ecs.LogDriver.awsLogs({
         streamPrefix: 'log',
+        logRetention: RetentionDays.ONE_DAY,
       }),
       portMappings: [{ containerPort: port }],
       secrets: {
@@ -239,6 +241,7 @@ export class ApiService extends Construct {
       },
       logging: ecs.LogDriver.awsLogs({
         streamPrefix: 'log',
+        logRetention: RetentionDays.ONE_DAY,
       }),
       secrets: {
         DB_USERNAME: ecs.Secret.fromSecretsManager(postgres.secret, 'username'),
@@ -294,6 +297,7 @@ export class ApiService extends Construct {
       },
       logging: ecs.LogDriver.awsLogs({
         streamPrefix: 'log',
+        logRetention: RetentionDays.ONE_DAY,
       }),
       portMappings: [{ containerPort: 8194 }],
       secrets: {
@@ -376,6 +380,7 @@ export class ApiService extends Construct {
       },
       logging: ecs.LogDriver.awsLogs({
         streamPrefix: 'log',
+        logRetention: RetentionDays.ONE_DAY,
       }),
       portMappings: [{ containerPort: pluginDaemonPort }, { containerPort: 5003 }],
     });
@@ -393,6 +398,7 @@ export class ApiService extends Construct {
       },
       logging: ecs.LogDriver.awsLogs({
         streamPrefix: 'log',
+        logRetention: RetentionDays.ONE_DAY,
       }),
       portMappings: [{ containerPort: 8000 }],
     });
