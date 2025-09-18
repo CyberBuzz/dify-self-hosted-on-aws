@@ -5,6 +5,7 @@ import { IAlb } from '../alb';
 import { IRepository } from 'aws-cdk-lib/aws-ecr';
 import { EnvironmentProps } from '../../environment-props';
 import { getAdditionalEnvironmentVariables, getAdditionalSecretVariables } from './environment-variables';
+import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 
 export interface WebServiceProps {
   cluster: ICluster;
@@ -68,6 +69,7 @@ export class WebService extends Construct {
       },
       logging: ecs.LogDriver.awsLogs({
         streamPrefix: 'log',
+        logRetention: RetentionDays.ONE_DAY,
       }),
       portMappings: [{ containerPort: port }],
       healthCheck: {
