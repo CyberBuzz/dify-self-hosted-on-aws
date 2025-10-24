@@ -16,7 +16,6 @@ export const props: EnvironmentProps = {
   // uncomment the below options for less expensive configuration:
   isRedisMultiAz: false,
   useNatInstance: true,
-  enableAuroraScalesToZero: true,
   useFargateSpot: true,
 
   customEcrRepositoryName: 'dify-images',
