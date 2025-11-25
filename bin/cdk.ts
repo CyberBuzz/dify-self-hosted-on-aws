@@ -33,12 +33,7 @@ export const props: EnvironmentProps = {
       key: 'NOTION_INTERNAL_SECRET',
       value: { secretName: 'NOTION_INTERNAL_SECRET'},
       targets: ['api'], 
-    },
-    {
-      key: 'TRIGGER_URL',
-      value: `https://${subDomain}.${domainName}`,
-      targets: ['web', 'api'], 
-    },
+    }
   ],
 };
 
