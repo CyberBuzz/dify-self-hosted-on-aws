@@ -438,7 +438,7 @@ export class ApiService extends Construct {
     postgres.connections.allowDefaultPortFrom(service);
     redis.connections.allowDefaultPortFrom(service);
 
-    const paths = ['/console/api', '/api', '/v1', '/files'];
+    const paths = ['/console/api', '/api', '/v1', '/files', '/triggers'];
     alb.addEcsService('Api', service, port, '/health', [...paths, ...paths.map((p) => `${p}/*`)]);
     alb.addEcsService(
       'Extension',

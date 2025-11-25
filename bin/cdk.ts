@@ -5,11 +5,14 @@ import { DifyOnAwsStack } from '../lib/dify-on-aws-stack';
 import { UsEast1Stack } from '../lib/us-east-1-stack';
 import { EnvironmentProps } from '../lib/environment-props';
 
+const subDomain = 'dify';
+const domainName = 'aibase.buzz';
+
 export const props: EnvironmentProps = {
   awsRegion: 'ap-northeast-1', // Tokyo region
   awsAccount: '130713583835',
   // Set Dify version
-  difyImageTag: '1.10.0',
+  // difyImageTag: '1.10.0',
   // Set plugin-daemon version to stable release
   // difyPluginDaemonImageTag: '0.1.2-local',
 
@@ -20,8 +23,8 @@ export const props: EnvironmentProps = {
 
   customEcrRepositoryName: 'dify-images',
 
-  domainName: 'aibase.buzz',
-  subDomain: 'dify',
+  domainName,
+  subDomain,
   useCloudFront: false,
 
   // Please see EnvironmentProps in lib/environment-props.ts for all the available properties
@@ -31,8 +34,12 @@ export const props: EnvironmentProps = {
       value: { secretName: 'NOTION_INTERNAL_SECRET'},
       targets: ['api'], 
     },
+    {
+      key: 'TRIGGER_URL',
+      value: `https://${subDomain}.${domainName}`,
+      targets: ['web', 'api'], 
+    },
   ],
-
 };
 
 const app = new cdk.App();
