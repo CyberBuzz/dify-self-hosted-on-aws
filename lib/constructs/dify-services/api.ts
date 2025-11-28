@@ -365,7 +365,7 @@ export class ApiService extends Construct {
         PYTHON_ENV_INIT_TIMEOUT: '120',
         DIFY_INNER_API_URL: `http://localhost:${port}`,
         PLUGIN_WORKING_PATH: '/app/storage/cwd',
-        FORCE_VERIFYING_SIGNATURE: 'true',
+        FORCE_VERIFYING_SIGNATURE: 'false', // DANGEROUS: set to true only in dev/test environment
         S3_USE_AWS_MANAGED_IAM: 'true',
         S3_ENDPOINT: `https://s3.${Stack.of(this).region}.amazonaws.com`,
       },
