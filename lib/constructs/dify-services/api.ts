@@ -412,6 +412,8 @@ export class ApiService extends Construct {
     taskDefinition.taskRole.addToPrincipalPolicy(
       new PolicyStatement({
         actions: [
+          'aws-marketplace:ViewSubscriptions',
+          'aws-marketplace:Subscribe',
           'bedrock:GetInferenceProfile',
           'bedrock:InvokeModel',
           'bedrock:InvokeModelWithResponseStream',
