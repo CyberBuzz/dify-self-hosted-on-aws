@@ -224,6 +224,9 @@ export class ApiService extends Construct {
         VECTOR_STORE: 'pgvector',
         PGVECTOR_DATABASE: postgres.pgVectorDatabaseName,
 
+        // The sandbox service endpoint.
+        CODE_EXECUTION_ENDPOINT: 'http://localhost:8194',
+
         PLUGIN_DAEMON_URL: `http://localhost:${pluginDaemonPort}`,
 
         // The sandbox service endpoint.
