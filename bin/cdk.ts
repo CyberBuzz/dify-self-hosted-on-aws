@@ -12,9 +12,9 @@ export const props: EnvironmentProps = {
   awsRegion: 'ap-northeast-1', // Tokyo region
   awsAccount: '130713583835',
   // Set Dify version
-  // difyImageTag: '1.11.1',
+  difyImageTag: '1.11.4',
   // Set plugin-daemon version to stable release
-  // difyPluginDaemonImageTag: '0.5.1-local',
+  difyPluginDaemonImageTag: '0.5.2-local',
 
   // uncomment the below options for less expensive configuration:
   isRedisMultiAz: false,
