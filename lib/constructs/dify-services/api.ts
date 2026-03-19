@@ -55,7 +55,7 @@ export class ApiService extends Construct {
 
     const taskDefinition = new FargateTaskDefinition(this, 'Task', {
       cpu: 2048,
-      memoryLimitMiB: 4096, // We got OOM frequently when RAM=512MB
+      memoryLimitMiB: 8192, // We got OOM frequently when RAM=512MB, then again at 4GB
       runtimePlatform: { cpuArchitecture: CpuArchitecture.X86_64 },
       volumes: [
         {
@@ -228,9 +228,6 @@ export class ApiService extends Construct {
         CODE_EXECUTION_ENDPOINT: 'http://localhost:8194',
 
         PLUGIN_DAEMON_URL: `http://localhost:${pluginDaemonPort}`,
-
-        // The sandbox service endpoint.
-        CODE_EXECUTION_ENDPOINT: 'http://localhost:8194',
 
         MARKETPLACE_API_URL: 'https://marketplace.dify.ai',
         MARKETPLACE_URL: 'https://marketplace.dify.ai',
@@ -443,6 +440,7 @@ export class ApiService extends Construct {
         },
       ],
       enableExecuteCommand: true,
+      healthCheckGracePeriod: Duration.seconds(120),
       minHealthyPercent: 100,
       // desiredCount: 3, // set this for scaling out (default: 1)
     });

@@ -15,6 +15,8 @@ export const props: EnvironmentProps = {
   difyImageTag: '1.11.4',
   // Set plugin-daemon version to stable release
   difyPluginDaemonImageTag: '0.5.2-local',
+  // Set sandbox version
+  difySandboxImageTag: '0.2.12',
 
   // uncomment the below options for less expensive configuration:
   isRedisMultiAz: false,
@@ -31,9 +33,9 @@ export const props: EnvironmentProps = {
   additionalEnvironmentVariables: [
     {
       key: 'NOTION_INTERNAL_SECRET',
-      value: { secretName: 'NOTION_INTERNAL_SECRET'},
-      targets: ['api'], 
-    }
+      value: { secretName: 'NOTION_INTERNAL_SECRET' },
+      targets: ['api'],
+    },
   ],
 };
 
