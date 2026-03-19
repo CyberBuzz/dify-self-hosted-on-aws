@@ -58,14 +58,32 @@ async function ensureECRRepository(repositoryName: string, awsConfig: AWSConfig)
   }
 }
 
+async function getAmd64Digest(dockerHubImage: string): Promise<string> {
+  const { stdout } = await execAsync(`docker manifest inspect "${dockerHubImage}" --verbose`);
+  const manifests = JSON.parse(stdout);
+  const list = Array.isArray(manifests) ? manifests : [manifests];
+  for (const m of list) {
+    const p = m.Descriptor?.platform ?? m.Platform ?? {};
+    if (p.architecture === 'amd64' && p.os === 'linux') {
+      return m.Descriptor?.digest ?? m.digest;
+    }
+  }
+  throw new Error(`No amd64 manifest found for ${dockerHubImage}`);
+}
+
 async function processImage(dockerHubImage: string, repositoryName: string, awsConfig: AWSConfig): Promise<void> {
   try {
     const { accountId, region } = awsConfig;
     const ecrImageTag = dockerHubImage.replace(':', '_').replace('langgenius/', '');
     const ecrImageUri = `${accountId}.dkr.ecr.${region}.amazonaws.com/${repositoryName}:${ecrImageTag}`;
+    const [repo] = dockerHubImage.split(':');
 
-    await execAsync(`docker buildx imagetools create --tag "${ecrImageUri}" "${dockerHubImage}"`);
-    console.log(`Successfully processed image: ${dockerHubImage}`);
+    const digest = await getAmd64Digest(dockerHubImage);
+    const digestRef = `${repo}@${digest}`;
+    await execAsync(`docker pull "${digestRef}"`);
+    await execAsync(`docker tag "${digestRef}" "${ecrImageUri}"`);
+    await execAsync(`docker push "${ecrImageUri}"`);
+    console.log(`Successfully processed image: ${dockerHubImage} (amd64: ${digest.slice(0, 19)}...)`);
   } catch (error) {
     throw new Error(`Failed to process image ${dockerHubImage}: ${error}`);
   }
