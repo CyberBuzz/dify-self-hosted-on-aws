@@ -129,6 +129,8 @@ export class ApiService extends Construct {
         MARKETPLACE_API_URL: 'https://marketplace.dify.ai',
         MARKETPLACE_URL: 'https://marketplace.dify.ai',
 
+        PLUGIN_MODEL_SCHEMA_CACHE_TTL: '3600',
+
         TEXT_GENERATION_TIMEOUT_MS: '600000',
 
         // used for Dify Extension endpoint URLs
@@ -231,6 +233,9 @@ export class ApiService extends Construct {
 
         MARKETPLACE_API_URL: 'https://marketplace.dify.ai',
         MARKETPLACE_URL: 'https://marketplace.dify.ai',
+
+        PLUGIN_MODEL_SCHEMA_CACHE_TTL: '3600',
+
         ...(email
           ? {
               MAIL_TYPE: 'smtp',
