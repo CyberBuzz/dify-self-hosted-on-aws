@@ -9,6 +9,7 @@ cdk.out
 
 .tmp
 deploy.yaml
+.env
 
 # Ignoring this file only because it is an OSS sample solution.
 # It is generally recommended to store the cdk.context.json in git.
