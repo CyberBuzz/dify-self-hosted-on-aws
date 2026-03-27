@@ -28,6 +28,7 @@ export const props: EnvironmentProps = {
   domainName,
   subDomain,
   useCloudFront: false,
+  setupEmail: true,
 
   // Please see EnvironmentProps in lib/environment-props.ts for all the available properties
   additionalEnvironmentVariables: [
