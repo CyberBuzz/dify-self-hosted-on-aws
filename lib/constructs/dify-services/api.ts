@@ -46,8 +46,6 @@ export interface ApiServiceProps {
    */
   mailFromDomain?: string;
 
-  consoleAllowedIPv4Cidrs?: string[];
-
   autoMigration: boolean;
   useFargateSpot: boolean;
 }
@@ -461,20 +459,8 @@ export class ApiService extends Construct {
     postgres.connections.allowDefaultPortFrom(service);
     redis.connections.allowDefaultPortFrom(service);
 
-    // Public API paths (no IP restriction)
-    const publicPaths = ['/v1', '/files', '/triggers'];
-    alb.addEcsService('ApiPublic', service, port, '/health', [...publicPaths, ...publicPaths.map((p) => `${p}/*`)]);
-
-    // Console paths (IP restricted when consoleAllowedIPv4Cidrs is set)
-    const consolePaths = ['/console/api', '/api'];
-    alb.addEcsService(
-      'ApiConsole',
-      service,
-      port,
-      '/health',
-      [...consolePaths, ...consolePaths.map((p) => `${p}/*`)],
-      props.consoleAllowedIPv4Cidrs,
-    );
+    const paths = ['/console/api', '/api', '/v1', '/files', '/triggers'];
+    alb.addEcsService('Api', service, port, '/health', [...paths, ...paths.map((p) => `${p}/*`)]);
 
     // Plugin Daemon (no IP restriction)
     alb.addEcsService(

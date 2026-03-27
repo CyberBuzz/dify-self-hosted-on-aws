@@ -157,7 +157,6 @@ export class DifyOnAwsStack extends cdk.Stack {
       allowAnySyscalls,
       customRepository,
       additionalEnvironmentVariables: props.additionalEnvironmentVariables,
-      consoleAllowedIPv4Cidrs: props.consoleAllowedIPv4Cidrs,
       autoMigration: true,
       useFargateSpot,
     });
