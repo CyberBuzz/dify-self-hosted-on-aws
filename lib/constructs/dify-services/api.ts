@@ -40,6 +40,12 @@ export interface ApiServiceProps {
 
   additionalEnvironmentVariables: EnvironmentProps['additionalEnvironmentVariables'];
 
+  /**
+   * Override the domain used in MAIL_DEFAULT_SEND_FROM (e.g. "dify.example.com").
+   * Falls back to email.domainName if not set.
+   */
+  mailFromDomain?: string;
+
   autoMigration: boolean;
   useFargateSpot: boolean;
 }
@@ -129,6 +135,8 @@ export class ApiService extends Construct {
         MARKETPLACE_API_URL: 'https://marketplace.dify.ai',
         MARKETPLACE_URL: 'https://marketplace.dify.ai',
 
+        PLUGIN_MODEL_SCHEMA_CACHE_TTL: '3600',
+
         TEXT_GENERATION_TIMEOUT_MS: '600000',
 
         // used for Dify Extension endpoint URLs
@@ -140,7 +148,7 @@ export class ApiService extends Construct {
               SMTP_SERVER: email.serverAddress,
               SMTP_PORT: email.serverPort,
               SMTP_USE_TLS: 'true',
-              MAIL_DEFAULT_SEND_FROM: `no-reply@${email.domainName}`,
+              MAIL_DEFAULT_SEND_FROM: `no-reply@${props.mailFromDomain ?? email.domainName}`,
             }
           : {}),
 
@@ -231,13 +239,16 @@ export class ApiService extends Construct {
 
         MARKETPLACE_API_URL: 'https://marketplace.dify.ai',
         MARKETPLACE_URL: 'https://marketplace.dify.ai',
+
+        PLUGIN_MODEL_SCHEMA_CACHE_TTL: '3600',
+
         ...(email
           ? {
               MAIL_TYPE: 'smtp',
               SMTP_SERVER: email.serverAddress,
               SMTP_PORT: email.serverPort,
               SMTP_USE_TLS: 'true',
-              MAIL_DEFAULT_SEND_FROM: `no-reply@${email.domainName}`,
+              MAIL_DEFAULT_SEND_FROM: `no-reply@${props.mailFromDomain ?? email.domainName}`,
             }
           : {}),
 
@@ -450,6 +461,8 @@ export class ApiService extends Construct {
 
     const paths = ['/console/api', '/api', '/v1', '/files', '/triggers'];
     alb.addEcsService('Api', service, port, '/health', [...paths, ...paths.map((p) => `${p}/*`)]);
+
+    // Plugin Daemon (no IP restriction)
     alb.addEcsService(
       'Extension',
       service.loadBalancerTarget({ containerName: 'PluginDaemon', containerPort: pluginDaemonPort }),

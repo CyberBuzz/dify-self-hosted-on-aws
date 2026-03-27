@@ -145,6 +145,7 @@ export class AlbWithCloudFront extends Construct implements IAlb {
     port: number,
     healthCheckPath: string,
     paths: string[],
+    sourceIpCidrs?: string[],
   ) {
     // we need different target group ids for different albs because a single target group can be attached to only one alb.
     const group = new ApplicationTargetGroup(this, `${id}TargetGroupInternal`, {
@@ -165,9 +166,13 @@ export class AlbWithCloudFront extends Construct implements IAlb {
     // https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-limits.html
     for (let i = 0; i < Math.floor((paths.length + 4) / 5); i++) {
       const slice = paths.slice(i * 5, (i + 1) * 5);
+      const conditions: ListenerCondition[] = [ListenerCondition.pathPatterns(slice)];
+      if (sourceIpCidrs && sourceIpCidrs.length > 0) {
+        conditions.push(ListenerCondition.sourceIps(sourceIpCidrs));
+      }
       this.listener.addTargetGroups(`${id}${i}`, {
         targetGroups: [group],
-        conditions: [ListenerCondition.pathPatterns(slice)],
+        conditions,
         priority: this.listenerPriority++,
       });
     }

@@ -150,6 +150,7 @@ export class DifyOnAwsStack extends cdk.Stack {
       redis,
       storageBucket,
       email,
+      mailFromDomain: subDomain ? `${subDomain}.${props.domainName}` : undefined,
       imageTag,
       sandboxImageTag,
       pluginDaemonImageTag,
@@ -166,6 +167,7 @@ export class DifyOnAwsStack extends cdk.Stack {
       imageTag,
       customRepository,
       additionalEnvironmentVariables: props.additionalEnvironmentVariables,
+      consoleAllowedIPv4Cidrs: props.consoleAllowedIPv4Cidrs,
       useFargateSpot,
     });
 

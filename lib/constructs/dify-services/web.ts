@@ -21,6 +21,7 @@ export interface WebServiceProps {
   customRepository?: IRepository;
 
   additionalEnvironmentVariables: EnvironmentProps['additionalEnvironmentVariables'];
+  consoleAllowedIPv4Cidrs?: string[];
   useFargateSpot: boolean;
 }
 
@@ -99,6 +100,6 @@ export class WebService extends Construct {
       minHealthyPercent: 100,
     });
 
-    alb.addEcsService('Web', service, port, '/', ['/*']);
+    alb.addEcsService('Web', service, port, '/', ['/*'], props.consoleAllowedIPv4Cidrs);
   }
 }

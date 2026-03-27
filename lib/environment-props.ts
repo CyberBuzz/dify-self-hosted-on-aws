@@ -6,13 +6,14 @@ export interface EnvironmentProps {
    * The AWS region where you want to deploy this system.
    * @example 'us-east-1'
    */
-  awsRegion: string;
+  awsRegion?: string;
 
   /**
    * You need to explicitly set AWS account ID when you look up an existing VPC or set a custom domain name.
+   * Falls back to CDK_DEFAULT_ACCOUNT or AWS_ACCOUNT_ID env var.
    * @example '123456789012'
    */
-  awsAccount: string;
+  awsAccount?: string;
 
   /**
    * IPv4 address ranges in CIDR notation that have access to the app.
@@ -27,6 +28,14 @@ export interface EnvironmentProps {
    * @default Allow access from any IP addresses
    */
   allowedIPv6Cidrs?: string[];
+
+  /**
+   * IPv4 address ranges in CIDR notation that have access to the console UI.
+   * API paths (/v1, /files, /e, /triggers) remain open.
+   * If not set, console access is not restricted by IP.
+   * @example ['203.0.113.0/24']
+   */
+  consoleAllowedIPv4Cidrs?: string[];
 
   /**
    * Use t4g.nano NAT instances instead of NAT Gateway.

@@ -1,22 +1,23 @@
 #!/usr/bin/env node
+import 'dotenv/config';
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
 import { DifyOnAwsStack } from '../lib/dify-on-aws-stack';
 import { UsEast1Stack } from '../lib/us-east-1-stack';
 import { EnvironmentProps } from '../lib/environment-props';
 
-const subDomain = 'dify';
-const domainName = 'aibase.buzz';
+const domainName = process.env.DIFY_DOMAIN_NAME;
+const subDomain = domainName ? (process.env.DIFY_SUBDOMAIN ?? 'dify') : undefined;
 
 export const props: EnvironmentProps = {
-  awsRegion: 'ap-northeast-1', // Tokyo region
-  awsAccount: '130713583835',
+  awsRegion: process.env.CDK_DEFAULT_REGION ?? process.env.AWS_REGION ?? 'ap-northeast-1',
+  awsAccount: process.env.CDK_DEFAULT_ACCOUNT ?? process.env.AWS_ACCOUNT_ID,
   // Set Dify version
-  difyImageTag: '1.11.4',
+  difyImageTag: '1.13.3',
   // Set plugin-daemon version to stable release
-  difyPluginDaemonImageTag: '0.5.2-local',
+  difyPluginDaemonImageTag: '0.5.3-local',
   // Set sandbox version
-  difySandboxImageTag: '0.2.12',
+  difySandboxImageTag: '0.2.14',
 
   // uncomment the below options for less expensive configuration:
   isRedisMultiAz: false,
@@ -28,6 +29,10 @@ export const props: EnvironmentProps = {
   domainName,
   subDomain,
   useCloudFront: false,
+  setupEmail: !!domainName,
+
+  // Restrict console access by IP (comma-separated CIDRs)
+  consoleAllowedIPv4Cidrs: process.env.CONSOLE_ALLOWED_CIDRS?.split(',').filter(Boolean),
 
   // Please see EnvironmentProps in lib/environment-props.ts for all the available properties
   additionalEnvironmentVariables: [
